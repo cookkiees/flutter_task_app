@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:task_app/app/routes/app_routes.dart';
 
 import '../../../../core/helpers/task_info.dart';
-import '../../../../core/helpers/task_logger.dart';
-import '../../../../core/local_storage/shared_preference.dart';
 import '../../../../core/services/firebase_firestore_service.dart';
 import '../../../../core/services/firebase_request.dart';
 import '../../../../core/services/firebase_request_method.dart';

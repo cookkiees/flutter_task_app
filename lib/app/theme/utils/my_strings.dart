@@ -20,18 +20,19 @@ class MyText {
     );
   }
 
-  static titleStyle() {
+  static titleStyle({Color? color}) {
     return GoogleFonts.poppins(
       fontSize: 14,
       fontWeight: FontWeight.w400,
-      color: MyColors.darkPrimary,
+      color: color,
     );
   }
 
-  static subtitleStyle({Color? color = Colors.grey}) {
+  static subtitleStyle(
+      {Color? color = Colors.grey, FontWeight fontWeight = FontWeight.w400}) {
     return GoogleFonts.poppins(
       fontSize: 11,
-      fontWeight: FontWeight.w400,
+      fontWeight: fontWeight,
       color: color,
     );
   }
