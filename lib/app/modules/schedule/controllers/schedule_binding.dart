@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../../core/services/firebase_firestore_service.dart';
+import '../../../core/services/firebase_firestore_service.dart';
 import 'schedule_controller.dart';
 import 'schedule_repository.dart';
 

@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import '../../theme/utils/my_colors.dart';
 import '../../theme/utils/my_strings.dart';
 import '../home/home_screen.dart';
+import '../schedule/controllers/schedule_controller.dart';
+import '../schedule/schedule_screen.dart';
 import 'controllers/main_controller.dart';
-import 'schedule/controllers/schedule_controller.dart';
-import 'schedule/schedule_screen.dart';
 
 class MainScreen extends GetView<MainController> {
   const MainScreen({super.key});
