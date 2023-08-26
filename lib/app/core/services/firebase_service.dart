@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:task_app/app/core/helpers/task_logger.dart';
 import 'package:task_app/app/core/services/firebase_result.dart';
 
+import '../local_storage/shared_preference.dart';
 import 'firebase_request.dart';
 import 'firebase_request_method.dart';
 import 'firebase_result_type.dart';
@@ -21,12 +22,19 @@ class FirebaseService extends GetConnect {
             email: request.email ?? '',
             password: request.password ?? '',
           );
+          String? accessToken = request.email ?? '';
+          await SharedPref.saveAccessToken(accessToken);
+          TaskLogger.logInfo('Access Token : $accessToken');
           break;
         case FirebaseRequestMethod.signUp:
           userCredential = await firebaseAuth.createUserWithEmailAndPassword(
             email: request.email ?? '',
             password: request.password ?? '',
           );
+          String? accessToken = request.email ?? '';
+          await SharedPref.saveAccessToken(accessToken);
+          TaskLogger.logInfo('Access Token : $accessToken');
+
           break;
         case FirebaseRequestMethod.googleSignIn:
           await googleSignIn.signOut();
@@ -38,6 +46,12 @@ class FirebaseService extends GetConnect {
             idToken: googleSignInAuth.idToken,
           );
           userCredential = await firebaseAuth.signInWithCredential(credential);
+          String? accessToken = userCredential.user?.email;
+          if (accessToken != null) {
+            await SharedPref.saveAccessToken(accessToken);
+            TaskLogger.logInfo('Access Token : $accessToken');
+          }
+
           break;
         default:
           throw Exception("Invalid request method");

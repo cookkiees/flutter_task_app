@@ -19,12 +19,12 @@ class UserBaseEntity {
     required this.lastSignIn,
   });
 
-  factory UserBaseEntity.fromFirebase(User user) {
+  factory UserBaseEntity.fromFirebase(User user, {String? username}) {
     final creationTime = user.metadata.creationTime;
     final lastSignIn = user.metadata.lastSignInTime;
     return UserBaseEntity(
       uid: user.uid,
-      displayName: user.displayName ?? '',
+      displayName: user.displayName ?? '$username',
       email: user.email ?? '',
       phoneNumber: user.phoneNumber ?? '',
       photoUrl: user.photoURL ?? '',
