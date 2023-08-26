@@ -6,8 +6,8 @@ import '../../../../core/services/firebase_firestore_service.dart';
 import '../../../../core/services/firebase_request.dart';
 import '../../../../core/services/firebase_request_method.dart';
 import '../../../../core/services/firebase_result_type.dart';
+import '../../../../routes/app_routes.dart';
 import '../../entities/user_base_entity.dart';
-import '../../models/user_base_view_model.dart';
 import 'sign_up_repository.dart';
 
 class SignUpController extends GetxController {
@@ -20,7 +20,6 @@ class SignUpController extends GetxController {
   RxBool isLoadingSignUp = false.obs;
   RxBool isHide = false.obs;
 
-  UserBaseViewModel? user;
   UserBaseEntity? _userEntity;
 
   resetField() {
@@ -36,7 +35,8 @@ class SignUpController extends GetxController {
           await worker.prosesSignUp(email.text, password.text);
       if (firebaseResult.result == FirebaseResultType.success) {
         final user = firebaseResult.data!.user;
-        _userEntity = UserBaseEntity.fromFirebase(user!);
+        _userEntity =
+            UserBaseEntity.fromFirebase(user!, username: username.text);
         if (_userEntity != null) {
           Map<String, dynamic> userMap = _userEntity!.toFirebase();
           final firestoreRequest = FirebaseFirestoreRequest(
@@ -46,8 +46,10 @@ class SignUpController extends GetxController {
             data: userMap,
           );
           await firestoreService.firestoreRequestUser(firestoreRequest);
+          Get.toNamed(AppRoutes.signIn);
         }
-        TaskInfo.showSnackBar("Welcome to Task App ${username.text}");
+        TaskInfo.showSnackBar(
+            "Sign Up successful. Please proceed to log in ${username.text}");
       } else if (firebaseResult.result == FirebaseResultType.failure) {
         TaskInfo.showSnackBar("${firebaseResult.message}");
       }

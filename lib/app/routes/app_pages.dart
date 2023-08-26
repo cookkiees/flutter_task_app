@@ -3,6 +3,8 @@ import 'package:task_app/app/modules/authentication/sign_in/controllers/sign_in_
 import 'package:task_app/app/modules/authentication/sign_in/sign_in_screen.dart';
 import 'package:task_app/app/modules/authentication/sign_up/controllers/sign_up_binding.dart';
 import 'package:task_app/app/modules/authentication/sign_up/sign_up_screen.dart';
+import 'package:task_app/app/modules/main/controllers/main_binding.dart';
+import 'package:task_app/app/modules/main/main_screen.dart';
 
 import '../modules/home/controller/home_binding.dart';
 import '../modules/home/home_page.dart';
@@ -21,6 +23,11 @@ abstract class AppPages {
       page: () => const SignUpScreen(),
       binding: SignUpBinding(),
       bindings: [SignInBinding()],
+    ),
+    GetPage(
+      name: AppRoutes.main,
+      page: () => MainScreen(),
+      binding: MainBinding(),
     ),
     GetPage(
       name: AppRoutes.home,

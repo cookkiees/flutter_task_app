@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_app/app/routes/app_routes.dart';
 
 import '../../../../core/helpers/task_info.dart';
+import '../../../../core/helpers/task_logger.dart';
+import '../../../../core/local_storage/shared_preference.dart';
 import '../../../../core/services/firebase_firestore_service.dart';
 import '../../../../core/services/firebase_request.dart';
 import '../../../../core/services/firebase_request_method.dart';
@@ -52,6 +55,7 @@ class SignInController extends GetxController {
               data: data,
             );
           }
+          Get.offAllNamed(AppRoutes.main, arguments: userViewModel);
         }
       } else if (firebaseResult.result == FirebaseResultType.failure) {
         TaskInfo.showSnackBar("${firebaseResult.message}");
@@ -75,6 +79,8 @@ class SignInController extends GetxController {
             documentId: user.email,
           );
           await fetchUserAndConvertViewModel(firestoreRequest);
+
+          Get.offAllNamed(AppRoutes.main, arguments: userViewModel);
         }
       } else if (firebaseResult.result == FirebaseResultType.failure) {
         TaskInfo.showSnackBar("${firebaseResult.message}");
