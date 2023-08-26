@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/helpers/task_logger.dart';
-import '../../../../core/local_storage/shared_preference.dart';
 import '../../../../core/services/firebase_request.dart';
 import '../../../../core/services/firebase_request_method.dart';
 import '../../../../core/services/firebase_result.dart';

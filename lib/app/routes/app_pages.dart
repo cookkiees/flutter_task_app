@@ -5,9 +5,11 @@ import 'package:task_app/app/modules/authentication/sign_up/controllers/sign_up_
 import 'package:task_app/app/modules/authentication/sign_up/sign_up_screen.dart';
 import 'package:task_app/app/modules/main/controllers/main_binding.dart';
 import 'package:task_app/app/modules/main/main_screen.dart';
+import 'package:task_app/app/modules/main/schedule/controllers/schedule_binding.dart';
+import 'package:task_app/app/modules/main/schedule/schedule_screen.dart';
 
 import '../modules/home/controller/home_binding.dart';
-import '../modules/home/home_page.dart';
+import '../modules/home/home_screen.dart';
 import 'app_routes.dart';
 
 abstract class AppPages {
@@ -26,13 +28,22 @@ abstract class AppPages {
     ),
     GetPage(
       name: AppRoutes.main,
-      page: () => MainScreen(),
+      page: () => const MainScreen(),
       binding: MainBinding(),
+      bindings: [
+        ScheduleBinding(),
+        HomeBinding(),
+      ],
     ),
     GetPage(
       name: AppRoutes.home,
-      page: () => const HomePage(),
+      page: () => const HomeScreen(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.schedule,
+      page: () => ScheduleScreen(),
+      binding: ScheduleBinding(),
     )
   ];
 }
