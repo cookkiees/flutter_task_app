@@ -37,6 +37,7 @@ dependencies:
   cached_network_image: ^3.2.3
   shared_preferences: ^2.2.0
   intl: ^0.18.1
+  carousel_slider: ^4.2.1
   get:
 
 
