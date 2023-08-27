@@ -20,7 +20,8 @@ class SignInWithOtherWidget extends StatelessWidget {
       children: [
         Flexible(
           child: MyGlobalElevatedButtonWidget(
-            side: const BorderSide(),
+            side: BorderSide(color: Colors.grey[300]!),
+            elevation: 0,
             backgroundColor: Colors.white,
             onPressed: () {
               controller.handleGoogleSignIn();
@@ -41,7 +42,8 @@ class SignInWithOtherWidget extends StatelessWidget {
         const SizedBox(width: 24),
         Flexible(
           child: MyGlobalElevatedButtonWidget(
-            side: const BorderSide(),
+            side: BorderSide(color: Colors.grey[300]!),
+            elevation: 0,
             backgroundColor: Colors.white,
             onPressed: () {
               controller.handleGoogleSignIn();

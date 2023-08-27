@@ -7,11 +7,13 @@ class MyGlobalElevatedButtonWidget extends StatelessWidget {
     required this.side,
     this.backgroundColor,
     required this.child,
+    this.elevation = 0.5,
   });
   final void Function()? onPressed;
   final BorderSide side;
   final Color? backgroundColor;
   final Widget? child;
+  final double? elevation;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class MyGlobalElevatedButtonWidget extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          elevation: 0,
+          elevation: elevation,
           surfaceTintColor: Colors.transparent,
           foregroundColor: Colors.white,
           backgroundColor: backgroundColor,

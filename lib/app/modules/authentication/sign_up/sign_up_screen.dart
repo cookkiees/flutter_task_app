@@ -106,7 +106,7 @@ class SignUpScreen extends GetView<SignUpController> {
       hintText: 'Enter your username ',
       controller: controller.username,
       // errorText: '',
-      prefixIcon: const Icon(Icons.person, size: 18),
+      prefixIcon: const Icon(Icons.person, size: 18, color: Colors.grey),
     );
   }
 
@@ -116,7 +116,7 @@ class SignUpScreen extends GetView<SignUpController> {
       hintText: 'Enter your email address',
       controller: controller.email,
       // errorText: '',
-      prefixIcon: const Icon(Icons.email, size: 18),
+      prefixIcon: const Icon(Icons.email, size: 18, color: Colors.grey),
     );
   }
 
@@ -127,7 +127,7 @@ class SignUpScreen extends GetView<SignUpController> {
         hintText: 'Enter your Password',
         controller: controller.password,
         obscureText: !controller.isHide.value,
-        prefixIcon: const Icon(Icons.lock, size: 18),
+        prefixIcon: const Icon(Icons.lock, size: 18, color: Colors.grey),
         suffixIcon: InkWell(
           onTap: () {
             controller.isHide.toggle();
@@ -137,10 +137,12 @@ class SignUpScreen extends GetView<SignUpController> {
                 ? const Icon(
                     Icons.visibility,
                     size: 20,
+                    color: Colors.grey,
                   )
                 : const Icon(
                     Icons.visibility_off,
                     size: 20,
+                    color: Colors.grey,
                   ),
           ),
         ),
@@ -151,7 +153,7 @@ class SignUpScreen extends GetView<SignUpController> {
   Widget _buildSignUpButton() {
     return MyGlobalElevatedButtonWidget(
       side: BorderSide.none,
-      backgroundColor: MyColors.darkPrimary,
+      backgroundColor: MyColors.blue,
       onPressed: () {
         controller.handleSignUp();
       },
@@ -180,7 +182,7 @@ class SignUpScreen extends GetView<SignUpController> {
           child: Text(
             'Sign In',
             style: MyText.subtitleStyle(
-              color: Colors.blue,
+              color: MyColors.blue,
             ),
           ),
         )
