@@ -9,7 +9,20 @@ class ScheduleController extends GetxController {
   List<String> months = DateFormat('MMMM').dateSymbols.MONTHS;
   RxString selectedMonth = DateFormat('MMMM').format(DateTime.now()).obs;
 
-  var selectedDay = RxInt(DateTime.now().day);
+  late ScrollController scrollController;
+  RxInt selectedDay = RxInt(DateTime.now().day);
+  Rx<DateTime?> selectedDate = Rx<DateTime?>(null);
+  Rx<TimeOfDay?> selectedTime = Rx<TimeOfDay?>(null);
+  Rx<String> selectedCategory = ''.obs;
+  Rx<String> selectedPriority = ''.obs;
+
+  void setSelectedPriority(String value) {
+    selectedPriority.value = value;
+  }
+
+  void setSelectedCategory(String value) {
+    selectedCategory.value = value;
+  }
 
   void setSelectedDay(int day) {
     selectedDay.value = day;
@@ -27,8 +40,6 @@ class ScheduleController extends GetxController {
     int daysInMonth = DateTime(year, month + 1, 0).day;
     return List<int>.generate(daysInMonth, (index) => index + 1);
   }
-
-  late ScrollController scrollController;
 
   @override
   void onInit() {

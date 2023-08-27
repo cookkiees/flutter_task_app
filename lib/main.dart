@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:task_app/app/core/helpers/task_logger.dart';
 import 'package:task_app/app/core/local_storage/shared_preference.dart';
 import 'package:task_app/app/core/services/firebase_binding.dart';
+import 'package:task_app/app/theme/utils/my_colors.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
 import 'firebase_options.dart';
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
       defaultTransition: Transition.fade,
       initialBinding: FirebaseBinding(),
       getPages: AppPages.pages,
+      theme: ThemeData(
+        primaryColor: MyColors.blue,
+      ),
     );
   }
 }

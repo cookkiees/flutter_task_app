@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_app/app/routes/app_routes.dart';
 
 import '../../theme/utils/my_colors.dart';
 import '../../theme/utils/my_strings.dart';
@@ -7,7 +8,6 @@ import '../home/home_screen.dart';
 import '../schedule/controllers/schedule_controller.dart';
 import '../schedule/schedule_screen.dart';
 import 'controllers/main_controller.dart';
-
 
 class MainScreen extends GetView<MainController> {
   const MainScreen({super.key});
@@ -55,7 +55,9 @@ class MainScreen extends GetView<MainController> {
         ],
       ),
       child: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed(AppRoutes.scheduleCreate);
+        },
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),

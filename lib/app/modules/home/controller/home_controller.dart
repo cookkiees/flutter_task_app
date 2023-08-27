@@ -41,7 +41,7 @@ class HomeController extends GetxController {
     }
   }
 
-  final userViewModel = Rx<UserBaseViewModel?>(null);
+  final userViewModel = Rx<UserBaseViewModel>(UserBaseViewModel());
   Future<void> fetchUserAndConvertViewModel() async {
     isLoadingUser.value = true;
     try {

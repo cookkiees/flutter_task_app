@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -316,27 +317,17 @@ class HomeScreen extends GetView<HomeController> {
   }
 
   Widget _buildUserViewData() {
-    // final image = controller.userViewModel.value?.photoUrl;
     return Row(
       children: [
         Obx(
           () => controller.isLoadingUser.value
               ? const SizedBox.shrink()
-              : const CircleAvatar(
+              : CircleAvatar(
                   radius: 22.0,
-                  backgroundColor: MyColors.darkPrimary,
-                  backgroundImage: AssetImage(
-                    'assets/avatars/1.jpg',
-                  ),
-                  // child: controller.userViewModel.value!.photoUrl != null
-                  //     ? CachedNetworkImage(
-                  //         imageUrl: image ?? '',
-                  //         placeholder: (context, url) =>
-                  //             const SizedBox.shrink(),
-                  //         errorWidget: (context, url, error) =>
-                  //             const SizedBox.shrink(),
-                  //       )
-                  //     : null,
+                  backgroundColor: MyColors.blue,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: Image.asset('assets/avatars/1.jpg')),
                 ),
         ),
         const SizedBox(width: 16),
@@ -354,7 +345,7 @@ class HomeScreen extends GetView<HomeController> {
               () => controller.isLoadingUser.value
                   ? const SizedBox.shrink()
                   : Text(
-                      controller.userViewModel.value?.name ?? '',
+                      controller.userViewModel.value.name ?? '',
                       style: MyText.defaultStyle(
                         color: MyColors.darkPrimary,
                         fontSize: 14,
