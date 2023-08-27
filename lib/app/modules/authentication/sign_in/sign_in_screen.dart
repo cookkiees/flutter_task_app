@@ -90,7 +90,7 @@ class SignInScreen extends GetView<SignInController> {
                 text: 'TASK',
                 style: MyText.defaultStyle(
                   fontSize: 24,
-                  color: Colors.red,
+                  color: MyColors.blue,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -115,7 +115,11 @@ class SignInScreen extends GetView<SignInController> {
       hintText: 'Enter your email address',
       controller: controller.email,
       // errorText: '',
-      prefixIcon: const Icon(Icons.email, size: 18),
+      prefixIcon: const Icon(
+        Icons.email,
+        size: 18,
+        color: Colors.grey,
+      ),
     );
   }
 
@@ -126,7 +130,11 @@ class SignInScreen extends GetView<SignInController> {
         hintText: 'Enter your Password',
         controller: controller.password,
         obscureText: !controller.isHide.value,
-        prefixIcon: const Icon(Icons.lock, size: 18),
+        prefixIcon: const Icon(
+          Icons.lock,
+          size: 18,
+          color: Colors.grey,
+        ),
         suffixIcon: InkWell(
           onTap: () {
             controller.isHide.toggle();
@@ -136,10 +144,12 @@ class SignInScreen extends GetView<SignInController> {
                 ? const Icon(
                     Icons.visibility,
                     size: 20,
+                    color: Colors.grey,
                   )
                 : const Icon(
                     Icons.visibility_off,
                     size: 20,
+                    color: Colors.grey,
                   ),
           ),
         ),
@@ -155,7 +165,7 @@ class SignInScreen extends GetView<SignInController> {
         child: Text(
           'Forgot password',
           style: MyText.subtitleStyle(
-            color: Colors.blue,
+            color: MyColors.blue,
           ),
         ),
       ),
@@ -165,7 +175,7 @@ class SignInScreen extends GetView<SignInController> {
   Widget _buildSignInButton() {
     return MyGlobalElevatedButtonWidget(
       side: BorderSide.none,
-      backgroundColor: MyColors.darkPrimary,
+      backgroundColor: MyColors.blue,
       onPressed: () {
         controller.handleSignIn();
       },
@@ -194,7 +204,7 @@ class SignInScreen extends GetView<SignInController> {
           child: Text(
             'Sign Up',
             style: MyText.subtitleStyle(
-              color: Colors.blue,
+              color: MyColors.blue,
             ),
           ),
         )

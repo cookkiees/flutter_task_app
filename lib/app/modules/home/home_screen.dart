@@ -245,27 +245,29 @@ class HomeScreen extends GetView<HomeController> {
   }
 
   Widget _buildAppBar() {
-    return Obx(() {
-      if (controller.selectedIndex.value == 0) {
-        return AppBar(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          elevation: 0,
-          title: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildUserViewData(),
-                _buildActionButton(),
-              ],
+    return Obx(
+      () {
+        if (controller.selectedIndex.value == 0) {
+          return AppBar(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            elevation: 0,
+            title: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildUserViewData(),
+                  _buildActionButton(),
+                ],
+              ),
             ),
-          ),
-        );
-      } else {
-        return const SizedBox.shrink();
-      }
-    });
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
   }
 
   Widget _buildActionButton() {
@@ -280,14 +282,35 @@ class HomeScreen extends GetView<HomeController> {
           ),
         ),
         const SizedBox(width: 24),
-        InkWell(
-          onTap: () {},
+        PopupMenuButton<String>(
+          color: Colors.white,
+          surfaceTintColor: Colors.white,
+          elevation: 0.5,
+          onSelected: (value) {
+            if (value == 'Settings') {
+              return;
+            } else if (value == 'Logout') {
+              controller.signOut();
+            }
+          },
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem<String>(
+                value: 'Settings',
+                child: Text('Settings', style: MyText.headerStyle()),
+              ),
+              PopupMenuItem<String>(
+                value: 'Logout',
+                child: Text('Logout', style: MyText.headerStyle()),
+              ),
+            ];
+          },
           child: Icon(
             Icons.settings,
             color: Colors.grey[400],
             size: 22,
           ),
-        ),
+        )
       ],
     );
   }

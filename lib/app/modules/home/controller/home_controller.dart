@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:task_app/app/core/helpers/task_logger.dart';
+import 'package:task_app/app/core/local_storage/shared_preference.dart';
+import 'package:task_app/app/routes/app_routes.dart';
 
 import '../../../core/services/firebase_result_type.dart';
 import '../../authentication/entities/user_base_entity.dart';
@@ -20,6 +24,21 @@ class HomeController extends GetxController {
   void onInit() async {
     await fetchUserAndConvertViewModel();
     super.onInit();
+  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  void signOut() async {
+    try {
+      await _auth.signOut();
+      await _googleSignIn.signOut();
+      await SharedPref.removeAccessTokenFrom();
+      Get.offAllNamed(AppRoutes.signIn);
+      TaskLogger.logInfo("Logged out successfully");
+    } catch (e) {
+      TaskLogger.logError("$e");
+    }
   }
 
   final userViewModel = Rx<UserBaseViewModel?>(null);

@@ -47,14 +47,14 @@ class MyGlobalTextFormFieldWidget extends StatelessWidget {
         helperStyle: MyText.subtitleStyle(),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: MyColors.darkPrimary,
+          borderSide: BorderSide(
+            color: Colors.grey[300]!,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: MyColors.darkPrimary,
+          borderSide: BorderSide(
+            color: Colors.grey[300]!,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
