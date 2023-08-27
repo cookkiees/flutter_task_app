@@ -8,6 +8,7 @@ import '../schedule/controllers/schedule_controller.dart';
 import '../schedule/schedule_screen.dart';
 import 'controllers/main_controller.dart';
 
+
 class MainScreen extends GetView<MainController> {
   const MainScreen({super.key});
 
