@@ -15,7 +15,7 @@ class SchedulePriorityWidget extends GetView<ScheduleController> {
   Widget build(BuildContext context) {
     List<String> priority = [
       'Low',
-      'Meduim',
+      'Medium',
       'High',
     ];
     List<Color> colors = [

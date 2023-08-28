@@ -21,3 +21,17 @@ class FirebaseFirestoreRequest {
     this.data,
   });
 }
+
+class FirestoreRequestTask {
+  final FirestoreRequestMethod method;
+  final Map<String, dynamic>? data;
+  final String? montly;
+  final String? date;
+
+  FirestoreRequestTask({
+    required this.method,
+    this.data,
+    this.montly,
+    this.date,
+  });
+}

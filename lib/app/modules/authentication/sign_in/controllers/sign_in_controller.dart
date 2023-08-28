@@ -13,7 +13,7 @@ import '../../models/user_base_view_model.dart';
 import 'sign_in_repository.dart';
 
 class SignInController extends GetxController {
-  final worker = Get.find<SignInRepository>();
+  final repository = Get.find<SignInRepository>();
   final firestore = Get.find<FirebaseFirestoreService>();
 
   final email = TextEditingController();
@@ -34,7 +34,7 @@ class SignInController extends GetxController {
   Future<void> handleGoogleSignIn() async {
     isLoadingGoogleSignIn.value = true;
     try {
-      final firebaseResult = await worker.prosesGoogleSignIn();
+      final firebaseResult = await repository.prosesGoogleSignIn();
       if (firebaseResult.result == FirebaseResultType.success) {
         User? currentUser = FirebaseAuth.instance.currentUser;
         FirebaseFirestoreRequest firestoreRequest;
@@ -67,7 +67,7 @@ class SignInController extends GetxController {
     isLoadingSignIn.value = true;
     try {
       final firebaseResult =
-          await worker.prosesSignIn(email.text, password.text);
+          await repository.prosesSignIn(email.text, password.text);
       if (firebaseResult.result == FirebaseResultType.success) {
         final user = firebaseResult.data!.user;
         if (user != null) {

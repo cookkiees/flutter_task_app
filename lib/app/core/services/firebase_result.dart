@@ -11,11 +11,11 @@ class FirebaseResult<T> {
 class FirestoreResult<T> {
   final FirestoreResultType result;
   final T? data;
-  final String? errorMessage;
+  final String? meessage;
 
   FirestoreResult({
     required this.result,
     this.data,
-    this.errorMessage,
+    this.meessage,
   });
 }

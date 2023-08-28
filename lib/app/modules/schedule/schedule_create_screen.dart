@@ -4,6 +4,7 @@ import 'package:task_app/app/components/my_global_elevatedbutton_widget.dart';
 import 'package:task_app/app/theme/utils/my_colors.dart';
 
 import '../../components/my_global_textformfield_widget.dart';
+import '../../core/helpers/task_loading.dart';
 import '../../theme/utils/my_strings.dart';
 import 'controllers/schedule_controller.dart';
 import 'widgets/schedule_category_widget.dart';
@@ -43,8 +44,19 @@ class ScheduleCreateScreen extends GetView<ScheduleController> {
           child: MyGlobalElevatedButtonWidget(
             side: BorderSide.none,
             backgroundColor: MyColors.blue,
-            onPressed: () {},
-            child: const Text('Create Task'),
+            onPressed: () {
+              controller.handleCraeteTask();
+            },
+            child: Obx(
+              () => controller.isLoadingCreateTask.value
+                  ? TaskLoading.button()
+                  : Text(
+                      'Create Task',
+                      style: MyText.defaultStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+            ),
           ),
         ),
       ),
@@ -115,19 +127,21 @@ class ScheduleCreateScreen extends GetView<ScheduleController> {
             style: MyText.defaultStyle(fontSize: 13),
           ),
           const SizedBox(height: 24),
-          const MyGlobalTextFormFieldWidget(
+          MyGlobalTextFormFieldWidget(
+            controller: controller.title,
             labelText: 'Title',
             hintText: 'Enter a title',
           ),
           const SizedBox(height: 16),
-          const SizedBox(
+          SizedBox(
             height: 100,
             child: MyGlobalTextFormFieldWidget(
               expands: true,
               isCollapsed: true,
               isDense: true,
-              contentPadding: EdgeInsets.all(14),
-              constraints: BoxConstraints(maxHeight: 100),
+              controller: controller.notes,
+              contentPadding: const EdgeInsets.all(14),
+              constraints: const BoxConstraints(maxHeight: 100),
               labelText: 'Notes',
               hintText: 'Enter a Notes',
               helperText: '',

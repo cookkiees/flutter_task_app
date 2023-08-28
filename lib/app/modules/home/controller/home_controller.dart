@@ -53,7 +53,7 @@ class HomeController extends GetxController {
           final data = UserBaseEntity.fromFirestoreData(results);
           userViewModel.value = UserBaseViewModel.fromEntity(data);
         } else {
-          TaskLogger.logError("${response.errorMessage}");
+          TaskLogger.logError("${response.meessage}");
         }
       }
     } catch (e) {
