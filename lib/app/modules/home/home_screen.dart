@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_app/app/core/notification/flutter_local_notification.dart';
 
+import '../../../main.dart';
 import '../../theme/utils/my_colors.dart';
 import '../../theme/utils/my_strings.dart';
 import 'controller/home_controller.dart';
@@ -274,7 +276,14 @@ class HomeScreen extends GetView<HomeController> {
     return Row(
       children: [
         InkWell(
-          onTap: () {},
+          onTap: () {
+            // NotificationController.createNewNotification();s
+            NotificationLocal.showBigTextNotification(
+              title: 'Hello ',
+              body: 'This is body',
+              plugin: flutterLocalNotificationsPlugin,
+            );
+          },
           child: Icon(
             Icons.notifications,
             color: Colors.grey[400],

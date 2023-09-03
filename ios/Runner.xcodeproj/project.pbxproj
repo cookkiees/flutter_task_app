@@ -470,6 +470,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A51911531F9EEA79AC4A24B3 /* Pods-Runner.profile.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
@@ -650,6 +651,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F45B2342BD89907EF7900DCE /* Pods-Runner.debug.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
@@ -673,6 +675,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8F9F714DD7A77C2FB21DEC1F /* Pods-Runner.release.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
