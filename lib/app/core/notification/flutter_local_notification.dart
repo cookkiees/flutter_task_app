@@ -7,10 +7,10 @@ class NotificationLocal {
     var initilizeAndroid =
         const AndroidInitializationSettings('mipmap/ic_launcher');
     var initilizeIOS = const DarwinInitializationSettings();
+    var initilizeMACOS = const DarwinInitializationSettings();
+
     var initializationSettings = InitializationSettings(
-      android: initilizeAndroid,
-      iOS: initilizeIOS,
-    );
+        android: initilizeAndroid, iOS: initilizeIOS, macOS: initilizeMACOS);
     await plugin.initialize(initializationSettings);
   }
 
