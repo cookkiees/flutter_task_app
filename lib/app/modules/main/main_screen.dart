@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_app/app/modules/home/controller/home_controller.dart';
+import 'package:task_app/app/routes/app_routes.dart';
 
 import '../../theme/utils/my_colors.dart';
 import '../../theme/utils/my_strings.dart';
@@ -8,13 +10,14 @@ import '../schedule/controllers/schedule_controller.dart';
 import '../schedule/schedule_screen.dart';
 import 'controllers/main_controller.dart';
 
-
 class MainScreen extends GetView<MainController> {
   const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final schedule = Get.find<ScheduleController>();
+    final home = Get.find<HomeController>();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Obx(
@@ -26,7 +29,7 @@ class MainScreen extends GetView<MainController> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(schedule),
+      bottomNavigationBar: _buildBottomNavigationBar(schedule, home),
       floatingActionButton: _buildFloatingActionbutton(),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
@@ -41,13 +44,13 @@ class MainScreen extends GetView<MainController> {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: MyColors.blue.withOpacity(0.2),
+            color: MyColors.red.withOpacity(0.2),
             blurRadius: 5,
             spreadRadius: 2,
             offset: const Offset(0, 4),
           ),
           BoxShadow(
-            color: MyColors.blue.withOpacity(0.2),
+            color: MyColors.red.withOpacity(0.2),
             blurRadius: 5,
             spreadRadius: 2,
             offset: const Offset(0, 4),
@@ -55,35 +58,41 @@ class MainScreen extends GetView<MainController> {
         ],
       ),
       child: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed(AppRoutes.scheduleCreate);
+        },
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),
-        backgroundColor: MyColors.blue,
+        backgroundColor: MyColors.red,
         highlightElevation: 1,
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
 
-  Widget _buildBottomNavigationBar(ScheduleController scheduleController) {
+  Widget _buildBottomNavigationBar(
+      ScheduleController schedule, HomeController home) {
     return Obx(
       () => Theme(
         data: ThemeData(splashColor: Colors.transparent),
         child: SizedBox(
-          height: 90,
+          height: 80,
           child: BottomNavigationBar(
             backgroundColor: Colors.white,
             elevation: 0,
-            selectedItemColor: Colors.grey[400],
-            unselectedItemColor: Colors.grey[200],
+            selectedItemColor: MyColors.orange,
+            unselectedItemColor: Colors.grey.shade300,
             selectedLabelStyle: MyText.defaultStyle(fontSize: 13),
             unselectedLabelStyle: MyText.defaultStyle(fontSize: 13),
             type: BottomNavigationBarType.fixed,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.home_filled),
+                icon: Icon(
+                  Icons.home_filled,
+                  size: 26,
+                ),
                 label: '',
               ),
               BottomNavigationBarItem(
@@ -93,8 +102,11 @@ class MainScreen extends GetView<MainController> {
             ],
             currentIndex: controller.selectedIndex.value,
             onTap: (index) {
+              if (index == 0) {
+                home.handleUpComingTask();
+              }
               controller.changeTab(index);
-              scheduleController.scrollToSelectedDay();
+              schedule.scrollToSelectedDay();
             },
           ),
         ),

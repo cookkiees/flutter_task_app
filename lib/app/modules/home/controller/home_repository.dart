@@ -20,4 +20,20 @@ class HomeRepository {
     final response = await service.firestoreRequestUser(firestoreRequest);
     return response;
   }
+
+  Future<FirestoreResult> prosesGetUpComingTask() async {
+    FirestoreRequestTask request = FirestoreRequestTask(
+      method: FirestoreRequestMethod.getUpComingTask,
+    );
+    final firestoreResult = await service.firestoreRequestTask(request);
+    return firestoreResult;
+  }
+
+  Future<FirestoreResult> prosesGetTodayTask() async {
+    FirestoreRequestTask request = FirestoreRequestTask(
+      method: FirestoreRequestMethod.getTodayTask,
+    );
+    final firestoreResult = await service.firestoreRequestTask(request);
+    return firestoreResult;
+  }
 }

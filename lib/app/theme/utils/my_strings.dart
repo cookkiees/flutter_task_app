@@ -4,12 +4,15 @@ import 'package:task_app/app/theme/utils/my_colors.dart';
 
 class MyText {
   static defaultStyle(
-      {double? fontSize, FontWeight? fontWeight, Color? color}) {
+      {double? fontSize,
+      FontWeight? fontWeight,
+      Color? color,
+      TextOverflow? overflow}) {
     return GoogleFonts.poppins(
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      color: color,
-    );
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+        color: color,
+        textStyle: TextStyle(overflow: overflow));
   }
 
   static headerStyle() {

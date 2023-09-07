@@ -6,10 +6,10 @@ import 'package:task_app/app/modules/authentication/sign_up/sign_up_screen.dart'
 import 'package:task_app/app/modules/main/controllers/main_binding.dart';
 import 'package:task_app/app/modules/main/main_screen.dart';
 
-
 import '../modules/home/controller/home_binding.dart';
 import '../modules/home/home_screen.dart';
 import '../modules/schedule/controllers/schedule_binding.dart';
+import '../modules/schedule/schedule_create_screen.dart';
 import '../modules/schedule/schedule_screen.dart';
 import 'app_routes.dart';
 
@@ -44,6 +44,11 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.schedule,
       page: () => const ScheduleScreen(),
+      binding: ScheduleBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.scheduleCreate,
+      page: () => const ScheduleCreateScreen(),
       binding: ScheduleBinding(),
     )
   ];

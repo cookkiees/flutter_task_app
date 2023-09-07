@@ -1,9 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_app/app/core/notification/flutter_local_notification.dart';
 
+import '../../../main.dart';
+import '../../components/my_global_container_widget.dart';
 import '../../theme/utils/my_colors.dart';
 import '../../theme/utils/my_strings.dart';
+import '../schedule/models/schedule_view_model.dart';
 import 'controller/home_controller.dart';
 
 class HomeScreen extends GetView<HomeController> {
@@ -27,9 +32,23 @@ class HomeScreen extends GetView<HomeController> {
               _buildMontlyTasks(),
               const SizedBox(height: 16),
               _buildHeaderUpcomingPlans(),
-              ...List.generate(3, (index) {
-                return _buildUpcomingPlans();
-              }),
+              Obx(
+                () => controller.isLoadingUpComingTask.value
+                    ? const SizedBox.shrink()
+                    : Column(
+                        children: List.generate(
+                          controller.upcomingTask.length,
+                          (index) {
+                            if (controller.upcomingTask.isNotEmpty) {
+                              final task = controller.upcomingTask[index];
+                              return _buildUpComingTask(task!);
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          },
+                        ),
+                      ),
+              ),
             ],
           ),
         ),
@@ -37,85 +56,122 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-  Padding _buildUpcomingPlans() {
+  Padding _buildUpComingTask(ScheduleViewModel task) {
+    Color colors;
+    if (task.priority == 'Low') {
+      colors = MyColors.blue;
+    } else if (task.priority == 'Medium') {
+      colors = MyColors.orange;
+    } else {
+      colors = MyColors.red;
+    }
     return Padding(
-      padding: const EdgeInsets.only(top: 24),
-      child: Container(
-        width: double.infinity,
-        height: 110,
-        margin: const EdgeInsets.symmetric(horizontal: 24),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.grey[300]!),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          children: [
-            Flexible(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 22,
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: MyColors.blue.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
+      padding: const EdgeInsets.only(top: 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 24, bottom: 16),
+            child: Text(
+              task.time,
+              style: MyText.defaultStyle(
+                color: Colors.grey,
+                fontSize: 10,
               ),
             ),
-            Flexible(
-              flex: 2,
-              child: Container(
-                margin: const EdgeInsets.only(top: 14, bottom: 14, right: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: Container(
+              height: 100,
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+              margin: const EdgeInsets.symmetric(horizontal: 24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(width: 1, color: colors),
+              ),
+              child: Row(
+                children: [
+                  MyGlobalContainerWidget(
+                    height: 68,
+                    isSelected: true,
+                    color: colors,
+                    child: Text(
+                      'Active',
+                      style: MyText.subtitleStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'WORKING',
-                          style: MyText.subtitleStyle(
-                            color: Colors.grey,
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                task.category.toUpperCase(),
+                                style: MyText.defaultStyle(
+                                  color: Colors.grey[400],
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Flexible(
+                                child: Text(
+                                  task.notes,
+                                  textAlign: TextAlign.center,
+                                  style: MyText.defaultStyle(
+                                    fontSize: 12,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Icon(
-                          Icons.more_horiz,
-                          size: 18,
-                          color: Colors.grey[400],
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_month,
+                              size: 12,
+                              color: colors,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              task.date,
+                              style: MyText.defaultStyle(
+                                fontSize: 10,
+                                color: Colors.grey[400],
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    Text(
-                      'Meeting for new firm web app',
-                      style: MyText.titleStyle(),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: InkWell(
+                      onTap: () {},
+                      child: const Icon(
+                        Icons.more_horiz,
+                        color: Colors.grey,
+                        size: 20.0,
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.calendar_month,
-                          size: 14,
-                          color: Colors.grey[400],
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '24 April',
-                          style: MyText.defaultStyle(
-                            color: Colors.grey,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -146,7 +202,7 @@ class HomeScreen extends GetView<HomeController> {
     return SizedBox(
       height: 210,
       child: CarouselSlider.builder(
-        itemCount: 3,
+        itemCount: controller.todayTask.length,
         options: CarouselOptions(
           height: 180,
           autoPlay: false,
@@ -157,42 +213,56 @@ class HomeScreen extends GetView<HomeController> {
           autoPlayCurve: Curves.fastOutSlowIn,
         ),
         itemBuilder: (BuildContext context, int index, int realIndex) {
-          return _buildContentItemBuilder();
+          return Obx(() {
+            if (controller.isLoadingTodayTask.value) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.grey.shade100,
+                ),
+              );
+            } else if (controller.todayTask.isNotEmpty) {
+              final todayTask = controller.todayTask[index];
+              return _buildContentItemBuilder(todayTask!);
+            } else {
+              return const SizedBox.shrink();
+            }
+          });
         },
       ),
     );
   }
 
-  Builder _buildContentItemBuilder() {
+  Builder _buildContentItemBuilder(ScheduleViewModel task) {
+    Color colors;
+    if (task.priority == 'Low') {
+      colors = MyColors.blue;
+    } else if (task.priority == 'Medium') {
+      colors = MyColors.orange;
+    } else {
+      colors = MyColors.red;
+    }
     return Builder(
       builder: (BuildContext context) {
         return Container(
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                MyColors.blue.withOpacity(0.4),
-                MyColors.blue.withOpacity(0.2),
-                MyColors.blue.withOpacity(0.2),
-                MyColors.blue.withOpacity(0.4),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
             borderRadius: BorderRadius.circular(12),
+            color: colors.withOpacity(0.7),
             border: Border.all(
-              color: MyColors.blue.withOpacity(1),
-              width: 0.5,
+              color: colors.withOpacity(0.2),
+              width: 5,
             ),
             boxShadow: [
               BoxShadow(
-                color: MyColors.blue.withOpacity(0.3),
+                color: colors.withOpacity(0.3),
                 blurRadius: 5,
                 spreadRadius: 2,
                 offset: const Offset(0, 8),
               ),
               BoxShadow(
-                color: MyColors.blue.withOpacity(0.5),
+                color: colors.withOpacity(0.5),
                 blurRadius: 5,
                 offset: const Offset(0, 0),
               ),
@@ -274,7 +344,14 @@ class HomeScreen extends GetView<HomeController> {
     return Row(
       children: [
         InkWell(
-          onTap: () {},
+          onTap: () {
+            // NotificationController.createNewNotification();s
+            NotificationLocal.showBigTextNotification(
+              title: 'Hello ',
+              body: 'This is body',
+              plugin: flutterLocalNotificationsPlugin,
+            );
+          },
           child: Icon(
             Icons.notifications,
             color: Colors.grey[400],
@@ -316,27 +393,17 @@ class HomeScreen extends GetView<HomeController> {
   }
 
   Widget _buildUserViewData() {
-    // final image = controller.userViewModel.value?.photoUrl;
     return Row(
       children: [
         Obx(
           () => controller.isLoadingUser.value
               ? const SizedBox.shrink()
-              : const CircleAvatar(
+              : CircleAvatar(
                   radius: 22.0,
-                  backgroundColor: MyColors.darkPrimary,
-                  backgroundImage: AssetImage(
-                    'assets/avatars/1.jpg',
-                  ),
-                  // child: controller.userViewModel.value!.photoUrl != null
-                  //     ? CachedNetworkImage(
-                  //         imageUrl: image ?? '',
-                  //         placeholder: (context, url) =>
-                  //             const SizedBox.shrink(),
-                  //         errorWidget: (context, url, error) =>
-                  //             const SizedBox.shrink(),
-                  //       )
-                  //     : null,
+                  backgroundColor: MyColors.blue,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: Image.asset('assets/avatars/1.jpg')),
                 ),
         ),
         const SizedBox(width: 16),
@@ -354,7 +421,7 @@ class HomeScreen extends GetView<HomeController> {
               () => controller.isLoadingUser.value
                   ? const SizedBox.shrink()
                   : Text(
-                      controller.userViewModel.value?.name ?? '',
+                      controller.userViewModel.value.name ?? '',
                       style: MyText.defaultStyle(
                         color: MyColors.darkPrimary,
                         fontSize: 14,

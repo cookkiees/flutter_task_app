@@ -7,14 +7,14 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:33296540073:android:6bb0fcb26e2c737e0c64b8",
+        "mobilesdk_app_id": "1:33296540073:android:57b5e752bae5cc9f0c64b8",
         "android_client_info": {
           "package_name": "com.example.task_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "33296540073-tp8nkj6k6vo8oglnrho0nv57nq77t02n.apps.googleusercontent.com",
+          "client_id": "33296540073-j4domb9kr73cenau4ro19o51jccllolc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +27,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "33296540073-tp8nkj6k6vo8oglnrho0nv57nq77t02n.apps.googleusercontent.com",
+              "client_id": "33296540073-j4domb9kr73cenau4ro19o51jccllolc.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "33296540073-7bj6d0sj8sso4nv8fdukj7b694rheilq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterTaskApp.RunnerTests"
+              }
             }
           ]
         }

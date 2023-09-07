@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:task_app/app/theme/utils/my_colors.dart';
 import 'package:task_app/app/theme/utils/my_strings.dart';
 
+import '../../components/my_global_card_widget.dart';
 import 'controllers/schedule_controller.dart';
 
 class ScheduleScreen extends GetView<ScheduleController> {
@@ -35,55 +36,96 @@ class ScheduleScreen extends GetView<ScheduleController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                left: 24,
-                bottom: 24,
-                top: 8,
-              ),
+              padding: const EdgeInsets.only(left: 24, bottom: 24, top: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '3 task for today !!',
-                    style: MyText.subtitleStyle(),
+                  Obx(
+                    () {
+                      if (controller.isLoadingGetMonthlyTask.value) {
+                        return Text(
+                          '0 task for today !!',
+                          style: MyText.subtitleStyle(),
+                        );
+                      } else {
+                        int tasksForSelectedDay = controller.monthlyTask
+                            .where((task) =>
+                                int.parse(task!.date.split(' ')[1]) ==
+                                controller.selectedDay.value)
+                            .length;
+                        return Text(
+                          '$tasksForSelectedDay task for today !!',
+                          style: MyText.subtitleStyle(),
+                        );
+                      }
+                    },
                   ),
                   Text(
                     'Daily Task',
-                    style: MyText.defaultStyle(fontSize: 24),
+                    style: MyText.defaultStyle(
+                      fontSize: 24,
+                      color: MyColors.darkSecondary,
+                    ),
                   ),
                 ],
               ),
             ),
-            ListView.builder(
-              itemCount: 1,
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(left: 12, right: 24),
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                int hour = index ~/ 2;
-                int minute = (index % 2) * 30;
-                DateTime time = DateTime(0, 1, 1, hour, minute);
-                String formattedTime = DateFormat.Hm().format(time);
-
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12, bottom: 12),
-                      child: Text(
-                        formattedTime,
-                        style: MyText.defaultStyle(
-                          color: MyColors.darkPrimary,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                    const MyGlobalCardWidget()
-                  ],
+            Obx(() {
+              if (controller.isLoadingGetMonthlyTask.value) {
+                return const Center(
+                  child: CupertinoActivityIndicator(
+                    color: MyColors.blue,
+                  ),
                 );
-              },
-            ),
+              } else {
+                return ListView.builder(
+                  itemCount: controller.monthlyTask.length,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(left: 12, right: 24),
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    int taskDay = int.parse(
+                        controller.monthlyTask[index]!.date.split(' ')[1]);
+                    bool taskMatchesSelectedDay =
+                        taskDay == controller.selectedDay.value;
+
+                    if (taskMatchesSelectedDay) {
+                      final tasks = controller.monthlyTask
+                          .where((task) => taskMatchesSelectedDay)
+                          .toList();
+                      tasks.sort((a, b) {
+                        return a!.time.compareTo(b!.time);
+                      });
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 12, bottom: 12),
+                              child: Text(
+                                tasks[index]?.time ?? '',
+                                style: MyText.defaultStyle(
+                                  color: Colors.grey,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ),
+                            MyGlobalCardWidget(
+                              task: tasks[index]!,
+                            )
+                          ],
+                        ),
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
+                );
+              }
+            })
           ],
         ),
       ),
@@ -120,7 +162,7 @@ class ScheduleScreen extends GetView<ScheduleController> {
     return Obx(
       () => DropdownButton<String>(
         value: controller.selectedMonth.value,
-        onChanged: (newValue) {
+        onChanged: (newValue) async {
           controller.selectedMonth.value = newValue!;
         },
         underline: const SizedBox.shrink(),
@@ -176,8 +218,12 @@ class ScheduleScreen extends GetView<ScheduleController> {
           ),
           const SizedBox(height: 12),
           InkWell(
-            onTap: () {
+            onTap: () async {
               controller.setSelectedDay(day);
+              await controller.handleGetMonthlyTask(
+                controller.selectedMonth.value,
+                '$day',
+              );
             },
             child: Obx(
               () => Container(
@@ -226,28 +272,6 @@ class ScheduleScreen extends GetView<ScheduleController> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class MyGlobalCardWidget extends StatelessWidget {
-  const MyGlobalCardWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Container(
-        height: 80,
-        width: double.infinity,
-        padding: EdgeInsets.zero,
-        margin: const EdgeInsets.only(left: 12),
-        decoration: BoxDecoration(
-          color: MyColors.blue.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(width: 0.1, color: MyColors.blue),
-        ),
       ),
     );
   }

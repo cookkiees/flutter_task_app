@@ -17,7 +17,6 @@ class SignInRepository {
       password: password,
     );
     final firebaseResult = await service.firebaseAuth(request);
-
     return firebaseResult;
   }
 

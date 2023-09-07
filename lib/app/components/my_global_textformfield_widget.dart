@@ -13,33 +13,52 @@ class MyGlobalTextFormFieldWidget extends StatelessWidget {
     this.controller,
     this.suffixIcon,
     this.obscureText = false,
+    this.isCollapsed = false,
+    this.isDense = false,
+    this.expands = false,
+    this.constraints = const BoxConstraints(maxHeight: 50),
+    this.contentPadding,
+    this.helperText,
   });
-
+  final EdgeInsetsGeometry? contentPadding;
+  final BoxConstraints? constraints;
   final String? labelText;
   final String? hintText;
   final String? errorText;
+  final String? helperText;
+
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool obscureText;
+  final bool isCollapsed;
+  final bool isDense;
+  final bool expands;
 
   final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      expands: expands,
       controller: controller,
       style: MyText.titleStyle(),
       cursorColor: MyColors.darkPrimary,
       cursorWidth: 1.5,
       obscureText: obscureText,
+      maxLines: expands == false ? 1 : null,
+      minLines: null,
       decoration: InputDecoration(
+        isDense: isDense,
+        isCollapsed: isCollapsed,
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
         errorText: errorText,
         hintText: hintText,
+        helperText: helperText,
         hintStyle: MyText.subtitleStyle(),
-        constraints: const BoxConstraints(maxHeight: 50),
-        labelStyle: MyText.titleStyle(),
+        constraints: constraints,
+        labelStyle: MyText.titleStyle(color: MyColors.darkPrimary),
+        contentPadding: contentPadding,
         label: Text(
           '$labelText',
           style: MyText.defaultStyle(fontSize: 13),

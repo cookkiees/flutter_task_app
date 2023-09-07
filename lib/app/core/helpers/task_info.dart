@@ -8,13 +8,17 @@ class TaskInfo {
     ScaffoldMessenger.of(Get.context!).showSnackBar(
       SnackBar(
         elevation: 0,
-        backgroundColor: MyColors.darkPrimary,
+        backgroundColor: MyColors.orange,
         padding: const EdgeInsets.all(16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         behavior: SnackBarBehavior.floating,
         content: Text(
           '$message!!',
-          style: MyText.subtitleStyle(color: Colors.white),
+          style: MyText.defaultStyle(
+            color: Colors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         duration: const Duration(seconds: 2),
       ),

@@ -45,16 +45,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCHvnJLvR_wJQJaAErmkLyJ0GaEdJ8cz5w',
-    appId: '1:33296540073:web:ea8cf899b4d07cb80c64b8',
+    appId: '1:33296540073:web:84f2127e473322cf0c64b8',
     messagingSenderId: '33296540073',
     projectId: 'flutter-task-55acd',
     authDomain: 'flutter-task-55acd.firebaseapp.com',
     storageBucket: 'flutter-task-55acd.appspot.com',
+    measurementId: 'G-F2R11JQ2HJ',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCf669ufEbispAlebGfO1Xw-EuSUdcHPnU',
-    appId: '1:33296540073:android:6bb0fcb26e2c737e0c64b8',
+    appId: '1:33296540073:android:57b5e752bae5cc9f0c64b8',
     messagingSenderId: '33296540073',
     projectId: 'flutter-task-55acd',
     storageBucket: 'flutter-task-55acd.appspot.com',
@@ -62,20 +63,22 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC5H4j_mDNgqZJobtQH5_XbNvBPFPv01X0',
-    appId: '1:33296540073:ios:b8472c8d7e2b83830c64b8',
+    appId: '1:33296540073:ios:114a8b6ba46a777e0c64b8',
     messagingSenderId: '33296540073',
     projectId: 'flutter-task-55acd',
     storageBucket: 'flutter-task-55acd.appspot.com',
+    androidClientId: '33296540073-60nufue124ekr4748p36va6h7s06p5bo.apps.googleusercontent.com',
     iosClientId: '33296540073-u5da0p6ogsniumc7ndhqqcrbsl512uck.apps.googleusercontent.com',
     iosBundleId: 'com.example.taskApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyC5H4j_mDNgqZJobtQH5_XbNvBPFPv01X0',
-    appId: '1:33296540073:ios:3a9129e5defbf3bf0c64b8',
+    appId: '1:33296540073:ios:9ab11eae15e1a2ab0c64b8',
     messagingSenderId: '33296540073',
     projectId: 'flutter-task-55acd',
     storageBucket: 'flutter-task-55acd.appspot.com',
+    androidClientId: '33296540073-60nufue124ekr4748p36va6h7s06p5bo.apps.googleusercontent.com',
     iosClientId: '33296540073-lddpfdspf1aderl8dv4fdoeut22nl8e7.apps.googleusercontent.com',
     iosBundleId: 'com.example.taskApp.RunnerTests',
   );
