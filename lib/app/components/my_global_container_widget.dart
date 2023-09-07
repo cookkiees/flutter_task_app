@@ -9,16 +9,18 @@ class MyGlobalContainerWidget extends StatelessWidget {
     this.color = MyColors.blue,
     this.isSelected = false,
     this.alignment = Alignment.center,
+    this.height = 40,
   });
 
   final Widget? child;
   final bool? isSelected;
   final Color color;
+  final double? height;
   final AlignmentGeometry? alignment;
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      height: height,
       alignment: alignment,
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(

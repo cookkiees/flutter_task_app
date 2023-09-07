@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_app/app/components/my_global_elevatedbutton_widget.dart';
+import 'package:task_app/app/modules/home/controller/home_controller.dart';
 import 'package:task_app/app/theme/utils/my_colors.dart';
 
 import '../../components/my_global_textformfield_widget.dart';
@@ -16,6 +17,7 @@ class ScheduleCreateScreen extends GetView<ScheduleController> {
 
   @override
   Widget build(BuildContext context) {
+    final home = Get.find<HomeController>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -30,7 +32,11 @@ class ScheduleCreateScreen extends GetView<ScheduleController> {
           ),
         ),
         leading: IconButton(
-          onPressed: () => Get.back(),
+          onPressed: () {
+            Get.back();
+            home.handleUpComingTask();
+            home.handleTodayTask();
+          },
           icon: Icon(
             Icons.arrow_back,
             size: 24.0,
@@ -40,7 +46,7 @@ class ScheduleCreateScreen extends GetView<ScheduleController> {
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
+          padding: const EdgeInsets.all(24),
           child: MyGlobalElevatedButtonWidget(
             side: BorderSide.none,
             backgroundColor: MyColors.blue,

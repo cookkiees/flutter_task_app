@@ -76,7 +76,7 @@ class FirebaseFirestoreService extends GetConnect {
 
     try {
       switch (request.method) {
-        case FirestoreRequestMethod.get:
+        case FirestoreRequestMethod.getbySelectedDateTask:
           querySnapshot = await firestore
               .collection('task')
               .doc(userEmail)
@@ -95,7 +95,55 @@ class FirebaseFirestoreService extends GetConnect {
             data: monthlyTaskEntities,
             meessage: '',
           );
-        case FirestoreRequestMethod.post:
+        case FirestoreRequestMethod.getUpComingTask:
+          final now = DateTime.now();
+          final tomorrow = now.add(const Duration(days: 1));
+          final formattedTomorrow = DateFormat.d().format(tomorrow);
+          final DateFormat monthFormatter = DateFormat('MMMM');
+          final String formattedMonth = monthFormatter.format(now);
+          querySnapshot = await firestore
+              .collection('task')
+              .doc(userEmail)
+              .collection('monthly')
+              .doc(formattedMonth)
+              .collection(formattedTomorrow)
+              .get();
+          final monthlyTask = querySnapshot.docs;
+          List<ScheduleBaseEntity> monthlyTaskEntities = monthlyTask
+              .map((doc) => scheduleEntityFromDocumentSnapshot(doc))
+              .toList();
+
+          debugPrintFirestoreTask(request, userEmail, monthlyTaskEntities);
+          return FirestoreResult(
+            result: FirestoreResultType.success,
+            data: monthlyTaskEntities,
+            meessage: '',
+          );
+        case FirestoreRequestMethod.getTodayTask:
+          final now = DateTime.now();
+          final DateFormat monthFormatter = DateFormat('MMMM');
+          final String formattedMonth = monthFormatter.format(now);
+          final DateFormat dayFormatter = DateFormat('d');
+          final String formattedDay = dayFormatter.format(now);
+          querySnapshot = await firestore
+              .collection('task')
+              .doc(userEmail)
+              .collection('monthly')
+              .doc(formattedMonth)
+              .collection(formattedDay)
+              .get();
+          final monthlyTask = querySnapshot.docs;
+          List<ScheduleBaseEntity> monthlyTaskEntities = monthlyTask
+              .map((doc) => scheduleEntityFromDocumentSnapshot(doc))
+              .toList();
+
+          debugPrintFirestoreTask(request, userEmail, monthlyTaskEntities);
+          return FirestoreResult(
+            result: FirestoreResultType.success,
+            data: monthlyTaskEntities,
+            meessage: '',
+          );
+        case FirestoreRequestMethod.createTask:
           DateTime currentDate = DateTime.now();
           DateTime requestDate = request.data!['date'];
           String requestTimeStr = request.data!['time'] as String;
@@ -145,6 +193,7 @@ class FirebaseFirestoreService extends GetConnect {
               'date': releaseDate,
               'time': releaseTime,
             });
+
             debugPrintFirestoreTask(request, userEmail, null);
             return FirestoreResult(
               result: FirestoreResultType.success,
@@ -188,8 +237,8 @@ class FirebaseFirestoreService extends GetConnect {
     TaskLogger.logDebug('Collection : ${'TASK'}');
     TaskLogger.logDebug('Document : $documentId');
     TaskLogger.logDebug('Collection : ${'MONTHLY'}');
-    TaskLogger.logDebug('Document : ${request.montly}');
-    TaskLogger.logDebug('Collection : ${request.date}');
+    TaskLogger.logDebug('Document : ${request.montly ?? '-'}');
+    TaskLogger.logDebug('Collection : ${request.date ?? '-'}');
     if (request.data != null) {
       TaskLogger.logDebug('Document : ${request.data}');
     }

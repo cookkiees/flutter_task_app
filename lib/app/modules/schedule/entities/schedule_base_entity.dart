@@ -1,24 +1,27 @@
 class ScheduleBaseEntity {
-  final String title;
-  final String notes;
-  final String date;
-  final String time;
-  final String priority;
-  final String category;
-  final bool isActive;
+  final String? id;
+  final String? title;
+  final String? notes;
+  final String? date;
+  final String? time;
+  final String? priority;
+  final String? category;
+  final bool? isActive;
 
   ScheduleBaseEntity({
-    required this.title,
-    required this.notes,
-    required this.date,
-    required this.time,
-    required this.priority,
-    required this.category,
-    required this.isActive,
+    this.id,
+    this.title,
+    this.notes,
+    this.date,
+    this.time,
+    this.priority,
+    this.category,
+    this.isActive,
   });
 
   factory ScheduleBaseEntity.fromFirestoreData(Map<String, dynamic> data) {
     return ScheduleBaseEntity(
+      id: data['id'] ?? '',
       title: data['title'] ?? '',
       notes: data['notes'] ?? '',
       date: data['date'] ?? '',

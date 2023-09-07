@@ -9,9 +9,15 @@ class MyGlobalCardWidget extends StatelessWidget {
   const MyGlobalCardWidget({
     super.key,
     required this.task,
+    this.height = 70,
+    this.margin = const EdgeInsets.only(left: 12),
+    this.onActiveHeight = 40,
   });
 
   final ScheduleViewModel task;
+  final double? height;
+  final double? onActiveHeight;
+  final EdgeInsetsGeometry? margin;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +32,10 @@ class MyGlobalCardWidget extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Container(
-        height: 70,
+        height: height,
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        margin: const EdgeInsets.only(left: 12),
+        margin: margin,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
@@ -38,6 +44,7 @@ class MyGlobalCardWidget extends StatelessWidget {
         child: Row(
           children: [
             MyGlobalContainerWidget(
+              height: onActiveHeight,
               isSelected: true,
               color: colors,
               child: Text(

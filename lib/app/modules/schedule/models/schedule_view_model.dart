@@ -1,6 +1,8 @@
 import '../entities/schedule_base_entity.dart';
 
 class ScheduleViewModel {
+  final String id;
+
   final String title;
   final String notes;
   final String date;
@@ -10,7 +12,8 @@ class ScheduleViewModel {
   final bool isActive;
 
   ScheduleViewModel(
-      {required this.title,
+      {required this.id,
+      required this.title,
       required this.notes,
       required this.date,
       required this.time,
@@ -20,13 +23,14 @@ class ScheduleViewModel {
       s});
   factory ScheduleViewModel.fromEntity(ScheduleBaseEntity data) {
     return ScheduleViewModel(
-      title: data.title,
-      notes: data.notes,
-      date: data.date,
-      time: data.time,
-      priority: data.priority,
-      category: data.category,
-      isActive: data.isActive,
+      id: "${data.id}",
+      title: "${data.title}",
+      notes: "${data.notes}",
+      date: "${data.date}",
+      time: "${data.time}",
+      priority: "${data.priority}",
+      category: "${data.category}",
+      isActive: data.isActive ?? false,
     );
   }
 }

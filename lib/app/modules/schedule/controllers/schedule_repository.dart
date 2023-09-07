@@ -11,7 +11,7 @@ class ScheduleRepository {
   Future<FirestoreResult> prosesCreateTask(
       Map<String, dynamic>? data, String montly) async {
     FirestoreRequestTask request = FirestoreRequestTask(
-      method: FirestoreRequestMethod.post,
+      method: FirestoreRequestMethod.createTask,
       data: data,
       montly: montly,
     );
@@ -22,7 +22,7 @@ class ScheduleRepository {
   Future<FirestoreResult> prosesGetMonthlyTask(
       String montly, String date) async {
     FirestoreRequestTask request = FirestoreRequestTask(
-      method: FirestoreRequestMethod.get,
+      method: FirestoreRequestMethod.getbySelectedDateTask,
       montly: montly,
       date: date,
     );

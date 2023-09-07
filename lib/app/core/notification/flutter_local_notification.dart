@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationLocal {
@@ -37,17 +35,5 @@ class NotificationLocal {
       iOS: iOSNotificationDetails,
     );
     await plugin.show(0, title, body, not);
-  }
-
-  @pragma('vm:entry-point')
-  void notificationTapBackground(NotificationResponse notificationResponse) {
-    // ignore: avoid_print
-    log('notification(${notificationResponse.id}) action tapped: '
-        '${notificationResponse.actionId} with'
-        ' payload: ${notificationResponse.payload}');
-    if (notificationResponse.input?.isNotEmpty ?? false) {
-      // ignore: avoid_print
-      log('notification action tapped with input: ${notificationResponse.input}');
-    }
   }
 }

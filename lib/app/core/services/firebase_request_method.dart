@@ -5,6 +5,10 @@ enum FirebaseRequestMethod {
 }
 
 enum FirestoreRequestMethod {
+  getbySelectedDateTask,
+  createTask,
+  getUpComingTask,
+  getTodayTask,
   get,
   post,
   update,

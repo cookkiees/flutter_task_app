@@ -8,6 +8,8 @@ import 'package:task_app/app/routes/app_routes.dart';
 import '../../../core/services/firebase_result_type.dart';
 import '../../authentication/entities/user_base_entity.dart';
 import '../../authentication/models/user_base_view_model.dart';
+import '../../schedule/entities/schedule_base_entity.dart';
+import '../../schedule/models/schedule_view_model.dart';
 import 'home_repository.dart';
 
 class HomeController extends GetxController {
@@ -23,6 +25,8 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     await fetchUserAndConvertViewModel();
+    await handleUpComingTask();
+    await handleTodayTask();
     super.onInit();
   }
 
@@ -60,6 +64,52 @@ class HomeController extends GetxController {
       TaskLogger.logError(e.toString());
     } finally {
       isLoadingUser.value = false;
+    }
+  }
+
+  RxBool isLoadingUpComingTask = false.obs;
+  List<ScheduleViewModel?> upcomingTask = [];
+
+  Future<void> handleUpComingTask() async {
+    isLoadingUpComingTask.value = true;
+    try {
+      final firestore = await repository.prosesGetUpComingTask();
+      if (firestore.result == FirestoreResultType.success) {
+        List<ScheduleBaseEntity>? entity = firestore.data;
+
+        if (entity != null || entity!.isNotEmpty) {
+          upcomingTask = entity.map((scheduleEntity) {
+            return ScheduleViewModel.fromEntity(scheduleEntity);
+          }).toList();
+        }
+      } else if (firestore.result == FirestoreResultType.failure) {
+        TaskLogger.logError("${firestore.meessage}");
+      }
+    } finally {
+      isLoadingUpComingTask.value = false;
+    }
+  }
+
+  RxBool isLoadingTodayTask = false.obs;
+  List<ScheduleViewModel?> todayTask = [];
+
+  Future<void> handleTodayTask() async {
+    isLoadingTodayTask.value = true;
+    try {
+      final firestore = await repository.prosesGetTodayTask();
+      if (firestore.result == FirestoreResultType.success) {
+        List<ScheduleBaseEntity>? entity = firestore.data;
+
+        if (entity != null || entity!.isNotEmpty) {
+          todayTask = entity.map((scheduleEntity) {
+            return ScheduleViewModel.fromEntity(scheduleEntity);
+          }).toList();
+        }
+      } else if (firestore.result == FirestoreResultType.failure) {
+        TaskLogger.logError("${firestore.meessage}");
+      }
+    } finally {
+      isLoadingTodayTask.value = false;
     }
   }
 }
