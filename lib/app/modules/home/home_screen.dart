@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_app/app/core/notification/flutter_local_notification.dart';
@@ -29,26 +28,58 @@ class HomeScreen extends GetView<HomeController> {
             children: [
               _buildHeader(),
               const SizedBox(height: 16),
-              _buildMontlyTasks(),
+              Obx(
+                () => controller.isEmptyTodayTask.value
+                    ? SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: Center(
+                          child: Text(
+                            'You have no Tasks for today !!',
+                            style: MyText.defaultStyle(
+                              fontSize: 14,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ),
+                      )
+                    : _buildMontlyTasks(),
+              ),
               const SizedBox(height: 16),
               _buildHeaderUpcomingPlans(),
-              Obx(
-                () => controller.isLoadingUpComingTask.value
-                    ? const SizedBox.shrink()
-                    : Column(
-                        children: List.generate(
-                          controller.upcomingTask.length,
-                          (index) {
-                            if (controller.upcomingTask.isNotEmpty) {
-                              final task = controller.upcomingTask[index];
-                              return _buildUpComingTask(task!);
-                            } else {
-                              return const SizedBox.shrink();
-                            }
-                          },
+              Obx(() {
+                if (controller.isEmptyUpComingTask.value) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 160),
+                      Text(
+                        'You have no Tasks for tomorrow !!',
+                        style: MyText.defaultStyle(
+                          fontSize: 14,
+                          color: Colors.grey[500],
                         ),
                       ),
-              ),
+                    ],
+                  );
+                } else if (controller.isLoadingUpComingTask.value) {
+                  return const SizedBox.shrink();
+                } else {
+                  return Column(
+                    children: List.generate(
+                      controller.upcomingTask.length,
+                      (index) {
+                        if (controller.upcomingTask.isNotEmpty) {
+                          final task = controller.upcomingTask[index];
+                          return _buildUpComingTask(task!);
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                    ),
+                  );
+                }
+              }),
             ],
           ),
         ),
@@ -65,6 +96,9 @@ class HomeScreen extends GetView<HomeController> {
     } else {
       colors = MyColors.red;
     }
+    final bulan = task.date.substring(0, 3);
+    final tanggal = task.date.replaceAll(RegExp(r'[^0-9]'), '');
+    var date = "$tanggal $bulan ";
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: Column(
@@ -145,7 +179,7 @@ class HomeScreen extends GetView<HomeController> {
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              task.date,
+                              date,
                               style: MyText.defaultStyle(
                                 fontSize: 10,
                                 color: Colors.grey[400],
@@ -198,39 +232,84 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-  SizedBox _buildMontlyTasks() {
-    return SizedBox(
-      height: 210,
-      child: CarouselSlider.builder(
-        itemCount: controller.todayTask.length,
-        options: CarouselOptions(
-          height: 180,
-          autoPlay: false,
-          enlargeCenterPage: true,
-          viewportFraction: 0.8,
-          autoPlayInterval: const Duration(seconds: 2),
-          autoPlayAnimationDuration: const Duration(milliseconds: 800),
-          autoPlayCurve: Curves.fastOutSlowIn,
-        ),
-        itemBuilder: (BuildContext context, int index, int realIndex) {
-          return Obx(() {
-            if (controller.isLoadingTodayTask.value) {
-              return Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey.shade100,
+  Obx _buildMontlyTasks() {
+    return Obx(
+      () {
+        if (controller.isLoadingTodayTask.value) {
+          return const SizedBox(height: 200);
+        } else {
+          return SizedBox(
+            height: 210,
+            child: Stack(
+              children: [
+                CarouselSlider.builder(
+                  itemCount: controller.todayTask.length,
+                  options: CarouselOptions(
+                    height: 200,
+                    autoPlay: false,
+                    enlargeCenterPage: true,
+                    viewportFraction: 0.8,
+                    initialPage: 1,
+                    enableInfiniteScroll: false,
+                    autoPlayInterval: const Duration(seconds: 2),
+                    autoPlayAnimationDuration:
+                        const Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    onPageChanged: (index, carouselPageChangedReason) {
+                      controller.currentIndex.value = index;
+                    },
+                  ),
+                  itemBuilder:
+                      (BuildContext context, int index, int realIndex) {
+                    final todayTask = controller.todayTask[index];
+                    return _buildContentItemBuilder(todayTask!);
+                  },
                 ),
-              );
-            } else if (controller.todayTask.isNotEmpty) {
-              final todayTask = controller.todayTask[index];
-              return _buildContentItemBuilder(todayTask!);
-            } else {
-              return const SizedBox.shrink();
-            }
-          });
-        },
-      ),
+                const SizedBox(height: 12),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: _buildDotsIndocatorTaskToday(),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Obx _buildDotsIndocatorTaskToday() {
+    return Obx(
+      () => controller.isLoadingTodayTask.value
+          ? const SizedBox.shrink()
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                controller.todayTask.length,
+                (index) {
+                  final task = controller.todayTask[index];
+                  Color colors;
+                  if (task?.priority == 'Low') {
+                    colors = MyColors.blue;
+                  } else if (task?.priority == 'Medium') {
+                    colors = MyColors.orange;
+                  } else {
+                    colors = MyColors.red;
+                  }
+                  return Container(
+                    width: 4,
+                    height: 4,
+                    margin: const EdgeInsets.symmetric(horizontal: 6.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: controller.currentIndex.value == index
+                          ? colors
+                          : Colors.grey.shade400,
+                    ),
+                  );
+                },
+              ),
+            ),
     );
   }
 
@@ -243,10 +322,21 @@ class HomeScreen extends GetView<HomeController> {
     } else {
       colors = MyColors.red;
     }
+    final bulan = task.date.substring(0, 3);
+    final tanggal = task.date.replaceAll(RegExp(r'[^0-9]'), '');
+    var date = "$tanggal $bulan ";
+    DateTime now = DateTime.now();
+    String timeString = task.time;
+    List<String> timeParts = timeString.split(':');
+    int hour = int.parse(timeParts[0]);
+    int minute = int.parse(timeParts[1]);
+    DateTime taskTime = DateTime(now.year, now.month, now.day, hour, minute);
+
     return Builder(
       builder: (BuildContext context) {
         return Container(
           width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: colors.withOpacity(0.7),
@@ -265,6 +355,108 @@ class HomeScreen extends GetView<HomeController> {
                 color: colors.withOpacity(0.5),
                 blurRadius: 5,
                 offset: const Offset(0, 0),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: colors,
+                          blurRadius: 5,
+                          spreadRadius: 2,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      task.category,
+                      style: MyText.defaultStyle(
+                        color: colors,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  if (taskTime.hour >= 6 && taskTime.hour < 18)
+                    const Icon(
+                      Icons.wb_sunny,
+                      size: 20,
+                      color: Colors.white,
+                    )
+                  else
+                    Icon(
+                      Icons.nights_stay,
+                      size: 20,
+                      color: Colors.white,
+                      shadows: [
+                        BoxShadow(
+                          color: colors,
+                          blurRadius: 5,
+                          spreadRadius: 2,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    )
+                ],
+              ),
+              Text(
+                task.notes,
+                style: MyText.defaultStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.calendar_month,
+                        size: 18.0,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        date,
+                        style: MyText.defaultStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.schedule,
+                        size: 16.0,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        task.time,
+                        style: MyText.defaultStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
             ],
           ),
@@ -288,9 +480,13 @@ class HomeScreen extends GetView<HomeController> {
                   'My Montly Task',
                   style: MyText.defaultStyle(fontSize: 16),
                 ),
-                Text(
-                  '0 Task for this mounth',
-                  style: MyText.subtitleStyle(),
+                Obx(
+                  () => controller.isLoadingTodayTask.value
+                      ? SizedBox.fromSize()
+                      : Text(
+                          '${controller.todayTask.length} Task for Today',
+                          style: MyText.subtitleStyle(),
+                        ),
                 ),
               ],
             ),
@@ -347,8 +543,8 @@ class HomeScreen extends GetView<HomeController> {
           onTap: () {
             // NotificationController.createNewNotification();s
             NotificationLocal.showBigTextNotification(
-              title: 'Hello ',
-              body: 'This is body',
+              title: 'Task App',
+              body: 'Nothing to see here',
               plugin: flutterLocalNotificationsPlugin,
             );
           },

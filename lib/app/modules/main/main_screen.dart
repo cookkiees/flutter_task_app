@@ -90,7 +90,7 @@ class MainScreen extends GetView<MainController> {
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.home_filled,
+                  Icons.face,
                   size: 26,
                 ),
                 label: '',
