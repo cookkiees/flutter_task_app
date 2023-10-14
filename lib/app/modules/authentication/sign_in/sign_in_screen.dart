@@ -90,8 +90,8 @@ class SignInScreen extends GetView<SignInController> {
                 text: 'TASK',
                 style: MyText.defaultStyle(
                   fontSize: 24,
-                  color: MyColors.blue,
-                  fontWeight: FontWeight.w600,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w300,
                 ),
               ),
               TextSpan(

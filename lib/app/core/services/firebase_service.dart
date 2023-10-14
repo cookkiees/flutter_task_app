@@ -41,10 +41,12 @@ class FirebaseService extends GetConnect {
           await firebaseAuth.signOut();
           final googleSignInAccount = await googleSignIn.signIn();
           final googleSignInAuth = await googleSignInAccount!.authentication;
+          TaskLogger.logInfo("${googleSignInAccount.serverAuthCode}");
           final AuthCredential credential = GoogleAuthProvider.credential(
             accessToken: googleSignInAuth.accessToken,
             idToken: googleSignInAuth.idToken,
           );
+
           userCredential = await firebaseAuth.signInWithCredential(credential);
           String? accessToken = userCredential.user?.email;
           if (accessToken != null) {
